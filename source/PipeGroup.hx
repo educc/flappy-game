@@ -6,19 +6,36 @@ import flixel.group.FlxGroup;
 class PipeGroup extends FlxGroup
 {
 	static inline var PIPE_GAP = 130;
-	static inline var PIPE_MIN_HEIGHT = 100;
+	static inline var PIPE_MIN_HEIGHT = 80;
+
+	var pipeTop:PipeSprite;
+	var pipeBottom:PipeSprite;
 
 	public function new(x:Float)
 	{
 		super();
 
 		var heights = makeHeights();
-		trace(heights);
-		var pipeTop = new PipeSprite(x, 0, heights[0]);
-		var pipeBottom = new PipeSprite(x, heights[0] + PIPE_GAP, heights[1]);
+		pipeTop = new PipeSprite(x, 0, heights[0]);
+		pipeBottom = new PipeSprite(x, heights[0] + PIPE_GAP, heights[1]);
 
 		add(pipeTop);
 		add(pipeBottom);
+	}
+
+	public function width()
+	{
+		return pipeTop.width;
+	}
+
+	public function x():Float
+	{
+		return pipeTop.x;
+	}
+
+	public function xAfterWidth():Float
+	{
+		return pipeTop.x + pipeTop.width;
 	}
 
 	private function makeHeights():Array<Int>
