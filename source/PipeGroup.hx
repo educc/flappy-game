@@ -33,6 +33,12 @@ class PipeGroup extends FlxGroup
 		return pipeTop.x;
 	}
 
+	public function setX(x:Float)
+	{
+		pipeBottom.x = x;
+		pipeTop.x = x;
+	}
+
 	public function xAfterWidth():Float
 	{
 		return pipeTop.x + pipeTop.width;

@@ -13,6 +13,7 @@ class PlayState extends FlxState
 	var walls:FlxGroup;
 	var player:BirdSprite;
 	var pipes:Array<PipeGroup> = new Array();
+	var allPipesGroup:FlxGroup = new FlxGroup();
 
 	static inline var PIPE_SPACE_X:Float = 200.0;
 	static inline var PIPE_START_X:Float = 500.0;
@@ -37,7 +38,7 @@ class PlayState extends FlxState
 		walls.add(wallBottom);
 
 		// create pipes
-		createPipes(5);
+		createPipes(3);
 	}
 
 	override public function update(elapsed:Float)
@@ -45,23 +46,50 @@ class PlayState extends FlxState
 		super.update(elapsed);
 
 		FlxG.collide(player, walls);
+		// FlxG.collide(player, allPipesGroup);
 		player.update(elapsed);
 
-		if (pipes[0].xAfterWidth() <= 0)
+		if (anyPipeIsOffsetScreen())
 		{
-			createPipes(1);
-			var pipeRemoved = pipes.shift();
-			remove(pipeRemoved);
+			changePositionOffsetScreenPipe();
+		}
+	}
+
+	function anyPipeIsOffsetScreen()
+	{
+		for (pipe in pipes)
+		{
+			if (pipe.xAfterWidth() < 0)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	function changePositionOffsetScreenPipe()
+	{
+		var x = 0.0;
+		for (pipe in pipes)
+		{
+			if (pipe.xAfterWidth() > x)
+			{
+				x = pipe.xAfterWidth();
+			}
+		}
+
+		for (pipe in pipes)
+		{
+			if (pipe.xAfterWidth() < 0)
+			{
+				pipe.setX(x + PIPE_SPACE_X);
+			}
 		}
 	}
 
 	function createPipes(size:Int)
 	{
 		var x:Float = PIPE_START_X;
-		if (pipes.length > 0)
-		{
-			x = pipes[pipes.length - 1].xAfterWidth() + PIPE_SPACE_X;
-		}
 
 		for (i in 0...size)
 		{
@@ -70,7 +98,8 @@ class PlayState extends FlxState
 
 			x += PIPE_SPACE_X + newPipe.width();
 
-			add(newPipe);
+			allPipesGroup.add(newPipe);
 		}
+		add(allPipesGroup);
 	}
 }
