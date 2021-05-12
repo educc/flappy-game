@@ -39,7 +39,7 @@ class BirdSprite extends FlxSprite
 
 		if (jumping)
 		{
-			if (jumpTimer < 0.25)
+			if (jumpTimer < JUMP_LIMIT)
 			{
 				this.velocity.y = -300;
 			}
