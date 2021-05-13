@@ -8,13 +8,14 @@ class BirdSprite extends FlxSprite
 {
 	var jumpTimer:Float = 0;
 	var jumping:Bool = false;
+	var game:Game;
 
 	private static inline var JUMP_LIMIT = 0.25;
 
-	public function new(x:Float = 0, y:Float = 0)
+	public function new(x:Float = 0, y:Float = 0, game:Game)
 	{
 		super(x, y);
-
+		this.game = game;
 		makeGraphic(32, 32, FlxColor.BLUE);
 		this.acceleration.y = 900;
 		this.maxVelocity.y = 150;
@@ -22,7 +23,10 @@ class BirdSprite extends FlxSprite
 
 	override function update(elapsed:Float)
 	{
-		updateMovement(elapsed);
+		if (!game.isGameOver)
+		{
+			updateMovement(elapsed);
+		}
 		super.update(elapsed);
 	}
 

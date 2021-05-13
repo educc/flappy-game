@@ -1,10 +1,12 @@
 package;
 
 import flixel.FlxG;
+import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup;
 import flixel.util.FlxAxes;
+import haxe.Timer;
 
 class PlayState extends FlxState
 {
@@ -13,7 +15,8 @@ class PlayState extends FlxState
 	var walls:FlxGroup;
 	var player:BirdSprite;
 	var pipes:Array<PipeGroup> = new Array();
-	var allPipesGroup:FlxGroup = new FlxGroup();
+	var collisionObjects:FlxGroup = new FlxGroup();
+	var game:Game;
 
 	static inline var PIPE_SPACE_X:Float = 200.0;
 	static inline var PIPE_START_X:Float = 500.0;
@@ -22,9 +25,7 @@ class PlayState extends FlxState
 	{
 		super.create();
 
-		player = new BirdSprite(50, 0);
-		player.screenCenter(FlxAxes.Y);
-		add(player);
+		game = new Game();
 
 		// create walls
 		wallTop = new WallSprite(0, 0);
@@ -32,27 +33,40 @@ class PlayState extends FlxState
 
 		add(wallTop);
 		add(wallBottom);
-
-		walls = new FlxGroup();
-		walls.add(wallTop);
-		walls.add(wallBottom);
+		// collisionObjects.add(wallBottom);
 
 		// create pipes
 		createPipes(3);
+
+		// create bird
+		player = new BirdSprite(50, 0, game);
+		player.screenCenter(FlxAxes.Y);
+		add(player);
 	}
 
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
-		FlxG.collide(player, walls);
-		// FlxG.collide(player, allPipesGroup);
+		FlxG.collide(player, wallTop);
+		FlxG.collide(player, wallBottom, gameOver);
+		FlxG.overlap(player, collisionObjects, gameOver);
 		player.update(elapsed);
 
 		if (anyPipeIsOffsetScreen())
 		{
 			changePositionOffsetScreenPipe();
 		}
+	}
+
+	private function gameOver(player:FlxObject, anyWall:FlxObject)
+	{
+		this.game.isGameOver = true;
+		Timer.delay(() ->
+		{
+			this.switchTo(new PlayState());
+			FlxG.resetState();
+		}, 2000);
 	}
 
 	function anyPipeIsOffsetScreen()
@@ -93,13 +107,13 @@ class PlayState extends FlxState
 
 		for (i in 0...size)
 		{
-			var newPipe = new PipeGroup(x);
+			var newPipe = new PipeGroup(x, game);
 			pipes.push(newPipe);
 
 			x += PIPE_SPACE_X + newPipe.width();
 
-			allPipesGroup.add(newPipe);
+			collisionObjects.add(newPipe);
 		}
-		add(allPipesGroup);
+		add(collisionObjects);
 	}
 }

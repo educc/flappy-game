@@ -10,14 +10,16 @@ class PipeGroup extends FlxGroup
 
 	var pipeTop:PipeSprite;
 	var pipeBottom:PipeSprite;
+	var game:Game;
 
-	public function new(x:Float)
+	public function new(x:Float, game:Game)
 	{
 		super();
 
+		this.game = game;
 		var heights = makeHeights();
-		pipeTop = new PipeSprite(x, 0, heights[0]);
-		pipeBottom = new PipeSprite(x, heights[0] + PIPE_GAP, heights[1]);
+		pipeTop = new PipeSprite(x, 0, heights[0], game);
+		pipeBottom = new PipeSprite(x, heights[0] + PIPE_GAP, heights[1], game);
 
 		add(pipeTop);
 		add(pipeBottom);
@@ -43,6 +45,8 @@ class PipeGroup extends FlxGroup
 	{
 		return pipeTop.x + pipeTop.width;
 	}
+
+	// helpers
 
 	private function makeHeights():Array<Int>
 	{
