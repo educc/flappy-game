@@ -18,6 +18,9 @@ class PlayState extends FlxState
 	var collisionObjects:FlxGroup = new FlxGroup();
 	var game:Game;
 
+	var collideSoundName = "assets/sounds/impact.ogg";
+	var volume = 0.5;
+
 	static inline var PIPE_SPACE_X:Float = 200.0;
 	static inline var PIPE_START_X:Float = 500.0;
 
@@ -61,7 +64,12 @@ class PlayState extends FlxState
 
 	private function gameOver(player:FlxObject, anyWall:FlxObject)
 	{
+		if (this.game.isGameOver)
+		{
+			return;
+		}
 		this.game.isGameOver = true;
+		FlxG.sound.playMusic(collideSoundName, volume, false);
 		Timer.delay(() ->
 		{
 			this.switchTo(new PlayState());

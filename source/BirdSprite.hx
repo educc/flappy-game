@@ -9,6 +9,8 @@ class BirdSprite extends FlxSprite
 	var jumpTimer:Float = 0;
 	var jumping:Bool = false;
 	var game:Game;
+	var jumpSoundName = "assets/sounds/jump.ogg";
+	var volume = 0.5;
 
 	private static inline var JUMP_LIMIT = 0.25;
 
@@ -39,6 +41,7 @@ class BirdSprite extends FlxSprite
 		{
 			jumping = true;
 			jumpTimer = 0;
+			FlxG.sound.playMusic(jumpSoundName, volume, false);
 		}
 
 		if (jumping)
