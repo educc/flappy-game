@@ -30,6 +30,7 @@ class PlayState extends FlxState
 		super.create();
 
 		game = new Game();
+		game.backgroundVelocityX = -300;
 
 		setBackground();
 
@@ -56,8 +57,8 @@ class PlayState extends FlxState
 		super.update(elapsed);
 
 		FlxG.collide(player, wallTop);
-		FlxG.collide(player, ground, gameOver);
-		FlxG.overlap(player, collisionObjects, gameOver);
+		// FlxG.collide(player, ground, gameOver);
+		// FlxG.overlap(player, collisionObjects, gameOver);
 		player.update(elapsed);
 
 		if (anyPipeIsOffsetScreen())
