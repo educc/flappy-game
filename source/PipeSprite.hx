@@ -5,7 +5,7 @@ import flixel.util.FlxColor;
 
 class PipeSprite extends FlxSprite
 {
-	static inline var PIPE_WITH = 100;
+	static inline var PIPE_WITH = 80;
 
 	var game:Game;
 

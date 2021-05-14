@@ -2,7 +2,6 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.util.FlxColor;
 
 class BirdSprite extends FlxSprite
 {
@@ -11,14 +10,19 @@ class BirdSprite extends FlxSprite
 	var game:Game;
 	var jumpSoundName = "assets/sounds/jump.ogg";
 	var volume = 0.5;
+	var angleStep = ANGLE_STEP_DELTA;
 
 	private static inline var JUMP_LIMIT = 0.25;
+	private static inline var ANGLE_TIMER_LIMIT = 1.1;
+	private static inline var MIN_ANGLE = -25;
+	private static inline var MAX_ANGLE = 90;
+	private static inline var ANGLE_STEP_DELTA = 0.001;
 
 	public function new(x:Float = 0, y:Float = 0, game:Game)
 	{
 		super(x, y);
 		this.game = game;
-		loadRotatedGraphic()
+		// loadRotatedGraphic()
 		loadGraphic("assets/images/bird-anim.png", true, 43, 32);
 		setAnimation();
 		this.acceleration.y = 900;
@@ -27,9 +31,18 @@ class BirdSprite extends FlxSprite
 
 	override function update(elapsed:Float)
 	{
+		jumpTimer += elapsed;
 		if (!game.isGameOver)
 		{
 			updateMovement(elapsed);
+		}
+		else
+		{
+			animation.stop();
+		}
+		if (jumpTimer > ANGLE_TIMER_LIMIT)
+		{
+			this.angle = Math.min(MAX_ANGLE, this.angle + 4);
 		}
 		super.update(elapsed);
 	}
@@ -37,7 +50,6 @@ class BirdSprite extends FlxSprite
 	private function updateMovement(elapsed:Float)
 	{
 		var jumpPressed = FlxG.keys.justPressed.SPACE;
-		jumpTimer += elapsed;
 
 		if (!jumping && jumpPressed)
 		{
@@ -51,6 +63,7 @@ class BirdSprite extends FlxSprite
 			if (jumpTimer < JUMP_LIMIT)
 			{
 				this.velocity.y = -300;
+				this.angle = MIN_ANGLE;
 			}
 			else
 			{
