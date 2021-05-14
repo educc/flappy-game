@@ -1,6 +1,5 @@
 package;
 
-import flixel.FlxG;
 import flixel.group.FlxGroup;
 
 class PipeGroup extends FlxGroup
@@ -10,13 +9,15 @@ class PipeGroup extends FlxGroup
 
 	var pipeTop:PipeSprite;
 	var pipeBottom:PipeSprite;
+	var maxY:Int;
 	var game:Game;
 
-	public function new(x:Float, game:Game)
+	public function new(x:Float, maxY:Int, game:Game)
 	{
 		super();
-
 		this.game = game;
+		this.maxY = maxY;
+
 		var heights = makeHeights();
 		pipeTop = new PipeSprite(x, 0, heights[0], game);
 		pipeBottom = new PipeSprite(x, heights[0] + PIPE_GAP, heights[1], game);
@@ -50,8 +51,8 @@ class PipeGroup extends FlxGroup
 
 	private function makeHeights():Array<Int>
 	{
-		var topHeight = randomNumber(0, FlxG.height - PIPE_MIN_HEIGHT * 2 - PIPE_GAP) + PIPE_MIN_HEIGHT;
-		var bottomHeight = FlxG.height - PIPE_GAP - PIPE_MIN_HEIGHT;
+		var topHeight = randomNumber(0, this.maxY - PIPE_MIN_HEIGHT * 2 - PIPE_GAP) + PIPE_MIN_HEIGHT;
+		var bottomHeight = this.maxY - PIPE_GAP - PIPE_MIN_HEIGHT;
 		return [topHeight, bottomHeight];
 	}
 

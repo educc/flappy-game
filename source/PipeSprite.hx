@@ -15,7 +15,7 @@ class PipeSprite extends FlxSprite
 		this.game = game;
 		makeGraphic(PIPE_WITH, height, FlxColor.LIME);
 		this.immovable = true;
-		this.velocity.x = -100;
+		this.velocity.x = game.backgroundVelocityX;
 	}
 
 	override function update(elapsed:Float)

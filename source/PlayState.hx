@@ -11,7 +11,7 @@ import haxe.Timer;
 class PlayState extends FlxState
 {
 	var wallTop:FlxSprite;
-	var wallBottom:FlxSprite;
+	var ground:ScrollSpriteGroup;
 	var walls:FlxGroup;
 	var player:BirdSprite;
 	var pipes:Array<PipeGroup> = new Array();
@@ -23,6 +23,7 @@ class PlayState extends FlxState
 
 	static inline var PIPE_SPACE_X:Float = 200.0;
 	static inline var PIPE_START_X:Float = 500.0;
+	static inline var GROUND_Y:Int = 550;
 
 	override public function create()
 	{
@@ -30,13 +31,16 @@ class PlayState extends FlxState
 
 		game = new Game();
 
+		setBackground();
+
 		// create walls
 		wallTop = new WallSprite(0, 0);
-		wallBottom = new WallSprite(0, FlxG.height - 4);
+		wallTop.alpha = 0;
+		ground = new ScrollSpriteGroup(GROUND_Y, "assets/images/ground.png", game);
+		ground.setImmovable(true);
 
 		add(wallTop);
-		add(wallBottom);
-		// collisionObjects.add(wallBottom);
+		add(ground);
 
 		// create pipes
 		createPipes(3);
@@ -52,7 +56,7 @@ class PlayState extends FlxState
 		super.update(elapsed);
 
 		FlxG.collide(player, wallTop);
-		FlxG.collide(player, wallBottom, gameOver);
+		FlxG.collide(player, ground, gameOver);
 		FlxG.overlap(player, collisionObjects, gameOver);
 		player.update(elapsed);
 
@@ -115,7 +119,7 @@ class PlayState extends FlxState
 
 		for (i in 0...size)
 		{
-			var newPipe = new PipeGroup(x, game);
+			var newPipe = new PipeGroup(x, GROUND_Y, game);
 			pipes.push(newPipe);
 
 			x += PIPE_SPACE_X + newPipe.width();
@@ -123,5 +127,11 @@ class PlayState extends FlxState
 			collisionObjects.add(newPipe);
 		}
 		add(collisionObjects);
+	}
+
+	function setBackground()
+	{
+		var bg = new ScrollSpriteGroup(0, "assets/images/background.png", game);
+		add(bg);
 	}
 }
