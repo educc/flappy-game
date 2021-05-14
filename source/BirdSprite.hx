@@ -18,7 +18,9 @@ class BirdSprite extends FlxSprite
 	{
 		super(x, y);
 		this.game = game;
-		makeGraphic(32, 32, FlxColor.BLUE);
+		loadRotatedGraphic()
+		loadGraphic("assets/images/bird-anim.png", true, 43, 32);
+		setAnimation();
 		this.acceleration.y = 900;
 		this.maxVelocity.y = 150;
 	}
@@ -55,5 +57,12 @@ class BirdSprite extends FlxSprite
 				jumping = false;
 			}
 		}
+	}
+
+	function setAnimation()
+	{
+		// var animationFrames = [1, 2, 3, 4, 5, 6].concat([for (i in 0...45) 0]);
+		animation.add("fly", [0, 1], 4);
+		animation.play("fly");
 	}
 }
