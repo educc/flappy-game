@@ -30,7 +30,7 @@ class PlayState extends FlxState
 		super.create();
 
 		game = new Game();
-		game.backgroundVelocityX = -300;
+		// game.backgroundVelocityX = -300;
 
 		setBackground();
 
@@ -44,7 +44,7 @@ class PlayState extends FlxState
 		add(ground);
 
 		// create pipes
-		createPipes(3);
+		createPipes(2);
 
 		// create bird
 		player = new BirdSprite(50, 0, game);
@@ -57,8 +57,8 @@ class PlayState extends FlxState
 		super.update(elapsed);
 
 		FlxG.collide(player, wallTop);
-		// FlxG.collide(player, ground, gameOver);
-		// FlxG.overlap(player, collisionObjects, gameOver);
+		FlxG.collide(player, ground, gameOver);
+		FlxG.overlap(player, collisionObjects, gameOver);
 		player.update(elapsed);
 
 		if (anyPipeIsOffsetScreen())
@@ -105,12 +105,17 @@ class PlayState extends FlxState
 			}
 		}
 
-		for (pipe in pipes)
+		var pipesToRemove = pipes.filter(it -> it.xAfterWidth() < 0);
+		for (pipe in pipesToRemove)
 		{
-			if (pipe.xAfterWidth() < 0)
-			{
-				pipe.setX(x + PIPE_SPACE_X);
-			}
+			var newX = x + PIPE_SPACE_X;
+			var newPipe = mkPipe(newX);
+
+			pipes.remove(pipe);
+			pipes.push(newPipe);
+
+			collisionObjects.remove(pipe);
+			collisionObjects.add(newPipe);
 		}
 	}
 
@@ -130,9 +135,15 @@ class PlayState extends FlxState
 		add(collisionObjects);
 	}
 
+	function mkPipe(x:Float)
+	{
+		return new PipeGroup(x, GROUND_Y, this.game);
+	}
+
 	function setBackground()
 	{
-		var bg = new ScrollSpriteGroup(0, "assets/images/background.png", game);
+		// var bg = new ScrollSpriteGroup(0, "assets/images/background.png", game);
+		var bg = new FlxSprite(0, 0, "assets/images/background.png");
 		add(bg);
 	}
 }

@@ -19,6 +19,7 @@ class PipeGroup extends FlxGroup
 		this.maxY = maxY;
 
 		var heights = makeHeights();
+
 		pipeTop = new PipeSprite(x, 0, heights[0], game);
 		pipeBottom = new PipeSprite(x, heights[0] + PIPE_GAP, heights[1], game);
 
@@ -51,8 +52,10 @@ class PipeGroup extends FlxGroup
 
 	private function makeHeights():Array<Int>
 	{
-		var topHeight = randomNumber(PIPE_MIN_HEIGHT, this.maxY - PIPE_GAP - PIPE_MIN_HEIGHT);
-		var bottomHeight = this.maxY - PIPE_GAP - topHeight;
+		var max = this.maxY - PIPE_GAP - PIPE_MIN_HEIGHT * 2;
+		var mid = randomNumber(0, max);
+		var topHeight = PIPE_MIN_HEIGHT + mid;
+		var bottomHeight = PIPE_MIN_HEIGHT + (max - mid);
 		return [topHeight, bottomHeight];
 	}
 
