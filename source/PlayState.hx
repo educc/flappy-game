@@ -5,9 +5,13 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup;
+import flixel.system.scaleModes.RatioScaleMode;
 import flixel.text.FlxText;
 import flixel.util.FlxAxes;
 import haxe.Timer;
+import sprites.BackgroundSprite;
+import sprites.BirdSprite;
+import sprites.WallSprite;
 
 class PlayState extends FlxState
 {
@@ -20,23 +24,23 @@ class PlayState extends FlxState
 	var game:Game;
 	var scoreText:FlxText;
 	var score = 0;
-
-	var volume = 0.5;
+	var groundY:Int = 0;
 
 	static inline var SOUND_COLLIDE = "assets/sounds/impact.ogg";
 	static inline var SOUND_COIN = "assets/sounds/coin.ogg";
 	static inline var PIPE_SPACE_X:Float = 200.0;
 	static inline var PIPE_START_X:Float = 500.0;
-	static inline var GROUND_Y:Int = 550;
 
 	override public function create()
 	{
 		super.create();
+		FlxG.scaleMode = new RatioScaleMode();
+		groundY = FlxG.height - 90;
 
 		game = new Game();
 		// game.backgroundVelocityX = -300;
 
-		setBackground();
+		add(new BackgroundSprite());
 
 		// create pipes
 		createPipes(2);
@@ -50,7 +54,7 @@ class PlayState extends FlxState
 		// create walls
 		wallTop = new WallSprite(0, 0);
 		wallTop.alpha = 0;
-		ground = new ScrollSpriteGroup(GROUND_Y, "assets/images/ground.png", game);
+		ground = new ScrollSpriteGroup(groundY, "assets/images/ground.png", game);
 		ground.setImmovable(true);
 
 		add(wallTop);
@@ -135,7 +139,7 @@ class PlayState extends FlxState
 
 		for (i in 0...size)
 		{
-			var newPipe = new PipeGroup(x, GROUND_Y, game);
+			var newPipe = mkPipe(x);
 			pipes.push(newPipe);
 
 			x += PIPE_SPACE_X + newPipe.width();
@@ -147,14 +151,7 @@ class PlayState extends FlxState
 
 	function mkPipe(x:Float)
 	{
-		return new PipeGroup(x, GROUND_Y, this.game);
-	}
-
-	function setBackground()
-	{
-		// var bg = new ScrollSpriteGroup(0, "assets/images/background.png", game);
-		var bg = new FlxSprite(0, 0, "assets/images/background.png");
-		add(bg);
+		return new PipeGroup(x, groundY, this.game);
 	}
 
 	function updateScore()

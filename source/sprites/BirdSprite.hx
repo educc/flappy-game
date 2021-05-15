@@ -1,4 +1,4 @@
-package;
+package sprites;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -51,7 +51,7 @@ class BirdSprite extends FlxSprite
 
 	private function updateMovement(elapsed:Float)
 	{
-		var jumpPressed = FlxG.keys.justPressed.SPACE;
+		var jumpPressed = userPressJump();
 
 		if (!jumping && jumpPressed)
 		{
@@ -79,5 +79,18 @@ class BirdSprite extends FlxSprite
 		// var animationFrames = [1, 2, 3, 4, 5, 6].concat([for (i in 0...45) 0]);
 		animation.add("fly", [0, 1, 2], 4);
 		animation.play("fly");
+	}
+
+	function userPressJump():Bool
+	{
+		var jumpPressed = false;
+		#if FLX_KEYBOARD
+		jumpPressed = FlxG.keys.justPressed.SPACE;
+		#end
+		#if FLX_TOUCH
+		var list = FlxG.touches.justReleased();
+		jumpPressed = if (list.length > 0) true else false;
+		#end
+		return jumpPressed;
 	}
 }

@@ -4,7 +4,7 @@
 
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="FlappyGame" file="FlappyGame" main="Main" version="0.0.1" company="HaxeFlixel" />
+	<app title="FlappyGame" file="FlappyGame" main="Main" version="0.0.1" company="Edward Cacho" />
 
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
@@ -16,8 +16,9 @@
 	<!-- ____________________________ Window Settings ___________________________ -->
 
 	<!--These window settings apply to all targets-->
-	<window width="360" height="640" fps="60" background="#000000" hardware="true" vsync="false" />
-
+	<window width="360" height="780" fps="60" background="#000000" hardware="true" vsync="false" />
+	
+	
 	<!--HTML5-specific-->
 	<window if="html5" resizable="false" />
 
@@ -26,6 +27,10 @@
 
 	<!--Mobile-specific-->
 	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" />
+	<!-- <section if="ios">
+		<certificate path="cert/keystore.jks" alias="XXX" password="YYY" />
+		<config:ios team-id="ZZZ" identity="WWW" provisioning-profile="cert/Mars_Dev.mobileprovision" />
+	</section> -->
 
 	<!-- _____________________________ Path Settings ____________________________ -->
 
@@ -36,6 +41,8 @@
 	<!-- _______________________________ Libraries ______________________________ -->
 
 	<haxelib name="flixel" />
+
+	<dependency name="Metal.framework" if="ios"/>
 
 	<!--In case you want to use the addons package-->
 	<!--<haxelib name="flixel-addons" />-->

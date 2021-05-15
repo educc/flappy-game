@@ -1,6 +1,7 @@
 package;
 
 import flixel.group.FlxGroup;
+import sprites.PipeSprite;
 
 class PipeGroup extends FlxGroup
 {
