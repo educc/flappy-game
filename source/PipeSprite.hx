@@ -1,20 +1,25 @@
 package;
 
 import flixel.FlxSprite;
-import flixel.util.FlxColor;
 
 class PipeSprite extends FlxSprite
 {
 	static inline var PIPE_WITH = 80;
+	static inline var IMAGE = "assets/images/pipe-green.png";
 
 	var game:Game;
 
-	public function new(x:Float, y:Float, height:Int, game:Game)
+	public function new(x:Float, y:Float, rotate:Bool, game:Game)
 	{
 		super(x, y);
 		this.game = game;
-		makeGraphic(PIPE_WITH, height, FlxColor.LIME);
+
+		loadGraphic(IMAGE, false, 52, 320);
+		// makeGraphic(PIPE_WITH, height, FlxColor.LIME);
+		setOrientation(rotate);
 		this.immovable = true;
+		trace("height = " + this.height);
+		trace("width = " + this.width);
 		this.velocity.x = game.backgroundVelocityX;
 	}
 
@@ -25,5 +30,21 @@ class PipeSprite extends FlxSprite
 			this.velocity.x = 0;
 		}
 		super.update(elapsed);
+	}
+
+	function setOrientation(rotate)
+	{
+		setGraphicSize(PIPE_WITH, -1);
+		updateHitbox();
+
+		if (rotate)
+		{
+			// this.angle = 180;
+		}
+		else
+		{
+			this.flipY = true;
+			this.y = this.y - this.height;
+		}
 	}
 }

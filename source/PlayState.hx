@@ -34,6 +34,9 @@ class PlayState extends FlxState
 
 		setBackground();
 
+		// create pipes
+		createPipes(2);
+
 		// create walls
 		wallTop = new WallSprite(0, 0);
 		wallTop.alpha = 0;
@@ -42,9 +45,6 @@ class PlayState extends FlxState
 
 		add(wallTop);
 		add(ground);
-
-		// create pipes
-		createPipes(2);
 
 		// create bird
 		player = new BirdSprite(50, 0, game);
