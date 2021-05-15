@@ -21,9 +21,10 @@ class PlayState extends FlxState
 	var scoreText:FlxText;
 	var score = 0;
 
-	var collideSoundName = "assets/sounds/impact.ogg";
 	var volume = 0.5;
 
+	static inline var SOUND_COLLIDE = "assets/sounds/impact.ogg";
+	static inline var SOUND_COIN = "assets/sounds/coin.ogg";
 	static inline var PIPE_SPACE_X:Float = 200.0;
 	static inline var PIPE_START_X:Float = 500.0;
 	static inline var GROUND_Y:Int = 550;
@@ -83,7 +84,7 @@ class PlayState extends FlxState
 			return;
 		}
 		this.game.isGameOver = true;
-		FlxG.sound.playMusic(collideSoundName, volume, false);
+		SoundUtils.playReusableSound(SOUND_COLLIDE);
 		Timer.delay(() ->
 		{
 			this.switchTo(new PlayState());
@@ -158,9 +159,14 @@ class PlayState extends FlxState
 
 	function updateScore()
 	{
-		if (player.x >= pipes[0].xAfterWidth())
+		if (player.x + player.width >= pipes[0].xAfterWidth())
 		{
-			score += pipes[0].getPoints();
+			var point = pipes[0].getPoints();
+			score += point;
+			if (point > 0)
+			{
+				SoundUtils.playReusableSound(SOUND_COIN);
+			}
 		}
 		this.scoreText.text = Std.string(score);
 	}
