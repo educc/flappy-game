@@ -11,6 +11,7 @@ class PipeGroup extends FlxGroup
 	var pipeBottom:PipeSprite;
 	var maxY:Int;
 	var game:Game;
+	var point = 1;
 
 	public function new(x:Float, maxY:Int, game:Game)
 	{
@@ -46,6 +47,13 @@ class PipeGroup extends FlxGroup
 	public function xAfterWidth():Float
 	{
 		return pipeTop.x + pipeTop.width;
+	}
+
+	public function getPoints():Int
+	{
+		var result = point;
+		point = Std.int(Math.max(0, point - 1));
+		return result;
 	}
 
 	// helpers

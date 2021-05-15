@@ -5,6 +5,7 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup;
+import flixel.text.FlxText;
 import flixel.util.FlxAxes;
 import haxe.Timer;
 
@@ -17,6 +18,8 @@ class PlayState extends FlxState
 	var pipes:Array<PipeGroup> = new Array();
 	var collisionObjects:FlxGroup = new FlxGroup();
 	var game:Game;
+	var scoreText:FlxText;
+	var score = 0;
 
 	var collideSoundName = "assets/sounds/impact.ogg";
 	var volume = 0.5;
@@ -37,6 +40,12 @@ class PlayState extends FlxState
 		// create pipes
 		createPipes(2);
 
+		// score
+		scoreText = new FlxText(0, 50, 100, 32);
+		scoreText.alignment = FlxTextAlign.CENTER;
+		scoreText.screenCenter(FlxAxes.X);
+		add(scoreText);
+
 		// create walls
 		wallTop = new WallSprite(0, 0);
 		wallTop.alpha = 0;
@@ -48,7 +57,7 @@ class PlayState extends FlxState
 
 		// create bird
 		player = new BirdSprite(50, 0, game);
-		player.screenCenter(FlxAxes.Y);
+		player.screenCenter();
 		add(player);
 	}
 
@@ -60,11 +69,11 @@ class PlayState extends FlxState
 		FlxG.collide(player, ground, gameOver);
 		FlxG.overlap(player, collisionObjects, gameOver);
 		player.update(elapsed);
-
 		if (anyPipeIsOffsetScreen())
 		{
 			changePositionOffsetScreenPipe();
 		}
+		updateScore();
 	}
 
 	private function gameOver(player:FlxObject, anyWall:FlxObject)
@@ -145,5 +154,14 @@ class PlayState extends FlxState
 		// var bg = new ScrollSpriteGroup(0, "assets/images/background.png", game);
 		var bg = new FlxSprite(0, 0, "assets/images/background.png");
 		add(bg);
+	}
+
+	function updateScore()
+	{
+		if (player.x >= pipes[0].xAfterWidth())
+		{
+			score += pipes[0].getPoints();
+		}
+		this.scoreText.text = Std.string(score);
 	}
 }

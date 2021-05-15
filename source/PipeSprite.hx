@@ -18,8 +18,6 @@ class PipeSprite extends FlxSprite
 		// makeGraphic(PIPE_WITH, height, FlxColor.LIME);
 		setOrientation(rotate);
 		this.immovable = true;
-		trace("height = " + this.height);
-		trace("width = " + this.width);
 		this.velocity.x = game.backgroundVelocityX;
 	}
 
