@@ -1,11 +1,15 @@
 package states.play.sprites;
 
-import flixel.FlxG;
 import flixel.FlxSprite;
+import states.play.input.BirdBrain;
 import utils.SoundUtils;
 
 class BirdSprite extends FlxSprite
 {
+	// public props
+	public var brain(default, default):Null<BirdBrain>;
+
+	// props
 	var jumpTimer:Float = 0;
 	var jumping:Bool = false;
 	var game:Game;
@@ -21,6 +25,7 @@ class BirdSprite extends FlxSprite
 	static inline var MIN_ANGLE = -25;
 	static inline var MAX_ANGLE = 90;
 
+	// assets
 	static inline var SOUND_JUMP = "assets/sounds/jump.ogg";
 	static inline var ASSET_BIRD = "assets/images/bird-anim.png";
 
@@ -55,7 +60,7 @@ class BirdSprite extends FlxSprite
 
 	private function updateMovement(elapsed:Float)
 	{
-		var jumpPressed = userPressJump();
+		var jumpPressed = shoudJump();
 
 		if (!jumping && jumpPressed)
 		{
@@ -84,16 +89,12 @@ class BirdSprite extends FlxSprite
 		animation.play("fly");
 	}
 
-	function userPressJump():Bool
+	function shoudJump():Bool
 	{
-		var jumpPressed = false;
-		#if (web || desktop)
-		jumpPressed = FlxG.keys.justPressed.SPACE;
-		#end
-		#if FLX_TOUCH
-		var list = FlxG.touches.justReleased();
-		jumpPressed = if (list.length > 0) true else false;
-		#end
-		return jumpPressed;
+		if (this.brain == null)
+		{
+			return false;
+		}
+		return this.brain.shouldJump();
 	}
 }

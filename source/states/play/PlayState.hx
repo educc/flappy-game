@@ -11,6 +11,7 @@ import flixel.util.FlxAxes;
 import haxe.Timer;
 import states.play.groups.PipeGroup;
 import states.play.groups.ScrollSpriteGroup;
+import states.play.input.UserBirdBrain;
 import states.play.sprites.BackgroundSprite;
 import states.play.sprites.BirdSprite;
 import states.play.sprites.ScoreText;
@@ -64,9 +65,7 @@ class PlayState extends FlxState
 		add(ground);
 
 		// create bird
-		player = new BirdSprite(50, 0, game);
-		player.screenCenter();
-		add(player);
+		createBird();
 	}
 
 	override public function update(elapsed:Float)
@@ -155,5 +154,13 @@ class PlayState extends FlxState
 				SoundUtils.playReusableSound(SOUND_COIN);
 			}
 		}
+	}
+
+	function createBird()
+	{
+		player = new BirdSprite(50, 0, game);
+		player.screenCenter();
+		player.brain = new UserBirdBrain();
+		add(player);
 	}
 }
