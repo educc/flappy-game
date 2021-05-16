@@ -6,8 +6,6 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup;
 import flixel.system.scaleModes.RatioScaleMode;
-import flixel.text.FlxText;
-import flixel.util.FlxAxes;
 import haxe.Timer;
 import states.play.groups.PipeGroup;
 import states.play.groups.ScrollSpriteGroup;
@@ -22,17 +20,14 @@ class PlayState extends FlxState
 {
 	var wallTop:FlxSprite;
 	var ground:ScrollSpriteGroup;
-	var walls:FlxGroup;
 	var player:BirdSprite;
 	var pipes:Array<PipeGroup> = new Array();
 	var collisionObjects:FlxGroup = new FlxGroup();
 	var game:Game;
 	var scoreText:ScoreText;
-	var score = 0;
 	var groundY:Int = 0;
 
 	static inline var SOUND_COLLIDE = "assets/sounds/impact.ogg";
-	static inline var SOUND_COIN = "assets/sounds/coin.ogg";
 	static inline var PIPE_SPACE_X:Float = 200.0;
 	static inline var PIPE_START_X:Float = 500.0;
 
@@ -75,7 +70,6 @@ class PlayState extends FlxState
 		FlxG.collide(player, wallTop);
 		FlxG.collide(player, ground, gameOver);
 		FlxG.overlap(player, collisionObjects, gameOver);
-		// player.update(elapsed);
 		if (anyPipeIsOffsetScreen())
 		{
 			changePositionOffsetScreenPipe();
@@ -148,17 +142,12 @@ class PlayState extends FlxState
 		{
 			var point = pipes[0].getPoints();
 			this.scoreText.increaseScore(point);
-			score += point;
-			if (point > 0)
-			{
-				SoundUtils.playReusableSound(SOUND_COIN);
-			}
 		}
 	}
 
 	function createBird()
 	{
-		player = new BirdSprite(50, 0, game);
+		player = new BirdSprite(0, 0, game);
 		player.screenCenter();
 		player.brain = new UserBirdBrain();
 		add(player);

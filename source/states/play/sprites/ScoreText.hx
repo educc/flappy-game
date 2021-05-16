@@ -2,7 +2,12 @@ package states.play.sprites;
 
 import flixel.FlxG;
 import flixel.text.FlxText;
+import utils.SoundUtils;
 
+/**
+ * Handle Score starting from 0
+ * if the score increase then play a sound
+ */
 class ScoreText extends FlxText
 {
 	var currentText = "0";
@@ -10,6 +15,7 @@ class ScoreText extends FlxText
 
 	static inline var POS_Y = 50;
 	static inline var FONT_SIZE = 28;
+	static inline var SOUND_COIN = "assets/sounds/coin.ogg";
 
 	public function new()
 	{
@@ -26,6 +32,10 @@ class ScoreText extends FlxText
 	public function increaseScore(increase = 1)
 	{
 		this.score += increase;
+		if (increase > 0)
+		{
+			SoundUtils.playReusableSound(SOUND_COIN);
+		}
 		this.currentText = Std.string(this.score);
 	}
 }
