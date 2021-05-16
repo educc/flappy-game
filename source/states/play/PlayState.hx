@@ -13,6 +13,7 @@ import states.play.groups.PipeGroup;
 import states.play.groups.ScrollSpriteGroup;
 import states.play.sprites.BackgroundSprite;
 import states.play.sprites.BirdSprite;
+import states.play.sprites.ScoreText;
 import states.play.sprites.WallSprite;
 import utils.SoundUtils;
 
@@ -25,7 +26,7 @@ class PlayState extends FlxState
 	var pipes:Array<PipeGroup> = new Array();
 	var collisionObjects:FlxGroup = new FlxGroup();
 	var game:Game;
-	var scoreText:FlxText;
+	var scoreText:ScoreText;
 	var score = 0;
 	var groundY:Int = 0;
 
@@ -50,9 +51,7 @@ class PlayState extends FlxState
 		createPipes(2);
 
 		// score
-		scoreText = new FlxText(0, 50, 100, 32);
-		scoreText.alignment = FlxTextAlign.CENTER;
-		scoreText.screenCenter(FlxAxes.X);
+		scoreText = new ScoreText();
 		add(scoreText);
 
 		// create walls
@@ -77,7 +76,7 @@ class PlayState extends FlxState
 		FlxG.collide(player, wallTop);
 		FlxG.collide(player, ground, gameOver);
 		FlxG.overlap(player, collisionObjects, gameOver);
-		player.update(elapsed);
+		// player.update(elapsed);
 		if (anyPipeIsOffsetScreen())
 		{
 			changePositionOffsetScreenPipe();
@@ -102,26 +101,12 @@ class PlayState extends FlxState
 
 	function anyPipeIsOffsetScreen()
 	{
-		for (pipe in pipes)
-		{
-			if (pipe.xAfterWidth() < 0)
-			{
-				return true;
-			}
-		}
-		return false;
+		return pipes[0].xAfterWidth() < 0;
 	}
 
 	function changePositionOffsetScreenPipe()
 	{
-		var x = 0.0;
-		for (pipe in pipes)
-		{
-			if (pipe.xAfterWidth() > x)
-			{
-				x = pipe.xAfterWidth();
-			}
-		}
+		var x = pipes[pipes.length - 1].xAfterWidth();
 
 		var pipesToRemove = pipes.filter(it -> it.xAfterWidth() < 0);
 		for (pipe in pipesToRemove)
@@ -163,12 +148,12 @@ class PlayState extends FlxState
 		if (player.x + player.width >= pipes[0].xAfterWidth())
 		{
 			var point = pipes[0].getPoints();
+			this.scoreText.increaseScore(point);
 			score += point;
 			if (point > 0)
 			{
 				SoundUtils.playReusableSound(SOUND_COIN);
 			}
 		}
-		this.scoreText.text = Std.string(score);
 	}
 }
