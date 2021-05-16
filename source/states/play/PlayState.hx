@@ -7,6 +7,8 @@ import flixel.FlxState;
 import flixel.group.FlxGroup;
 import flixel.system.scaleModes.RatioScaleMode;
 import haxe.Timer;
+import states.play.event.EventSource;
+import states.play.event.PlayEvent;
 import states.play.groups.PipeGroup;
 import states.play.groups.ScrollSpriteGroup;
 import states.play.input.UserBirdBrain;
@@ -18,15 +20,20 @@ import utils.SoundUtils;
 
 class PlayState extends FlxState
 {
+	// props
+	var pipes:Array<PipeGroup> = new Array();
+	var groundY:Int = 0;
+	var isGameOver = false;
+	var events = new EventSource();
+
+	// sprites
 	var wallTop:FlxSprite;
 	var ground:ScrollSpriteGroup;
 	var player:BirdSprite;
-	var pipes:Array<PipeGroup> = new Array();
 	var collisionObjects:FlxGroup = new FlxGroup();
-	var game:Game;
 	var scoreText:ScoreText;
-	var groundY:Int = 0;
 
+	// constans
 	static inline var SOUND_COLLIDE = "assets/sounds/impact.ogg";
 	static inline var PIPE_SPACE_X:Float = 200.0;
 	static inline var PIPE_START_X:Float = 500.0;
@@ -37,9 +44,6 @@ class PlayState extends FlxState
 		FlxG.mouse.visible = false;
 		FlxG.scaleMode = new RatioScaleMode();
 		groundY = FlxG.height - 90;
-
-		game = new Game();
-		// game.backgroundVelocityX = -300;
 
 		add(new BackgroundSprite());
 
@@ -53,7 +57,7 @@ class PlayState extends FlxState
 		// create walls
 		wallTop = new WallSprite(0, 0);
 		wallTop.alpha = 0;
-		ground = new ScrollSpriteGroup(groundY, "assets/images/ground.png", game);
+		ground = new ScrollSpriteGroup(groundY, "assets/images/ground.png");
 		ground.setImmovable(true);
 
 		add(wallTop);
@@ -61,6 +65,10 @@ class PlayState extends FlxState
 
 		// create bird
 		createBird();
+
+		// events
+		events.subscribe(PlayEvent.GameOver, onGameOver);
+		events.subscribe(PlayEvent.Point, onPoint);
 	}
 
 	override public function update(elapsed:Float)
@@ -68,28 +76,23 @@ class PlayState extends FlxState
 		super.update(elapsed);
 
 		FlxG.collide(player, wallTop);
-		FlxG.collide(player, ground, gameOver);
-		FlxG.overlap(player, collisionObjects, gameOver);
+		FlxG.collide(player, ground, onBirdCollide);
+		FlxG.overlap(player, collisionObjects, onBirdCollide);
 		if (anyPipeIsOffsetScreen())
 		{
 			changePositionOffsetScreenPipe();
 		}
-		updateScore();
+		calculateScore();
 	}
 
-	private function gameOver(player:FlxObject, anyWall:FlxObject)
+	function onBirdCollide(player:FlxObject, anyWall:FlxObject)
 	{
-		if (this.game.isGameOver)
+		if (isGameOver)
 		{
 			return;
 		}
-		this.game.isGameOver = true;
 		SoundUtils.playReusableSound(SOUND_COLLIDE);
-		Timer.delay(() ->
-		{
-			this.switchTo(new PlayState());
-			FlxG.resetState();
-		}, 2000);
+		events.emit(PlayEvent.GameOver);
 	}
 
 	function anyPipeIsOffsetScreen()
@@ -133,23 +136,46 @@ class PlayState extends FlxState
 
 	function mkPipe(x:Float)
 	{
-		return new PipeGroup(x, groundY, this.game);
+		return new PipeGroup(x, groundY, this.events);
 	}
 
-	function updateScore()
+	function calculateScore()
 	{
 		if (player.x + player.width >= pipes[0].xAfterWidth())
 		{
 			var point = pipes[0].getPoints();
-			this.scoreText.increaseScore(point);
+			if (point > 0)
+			{
+				events.emit(PlayEvent.Point);
+			}
 		}
 	}
 
 	function createBird()
 	{
-		player = new BirdSprite(0, 0, game);
+		player = new BirdSprite(0, 0, this.events);
 		player.screenCenter();
 		player.brain = new UserBirdBrain();
 		add(player);
+	}
+
+	// EVENTS
+
+	function onGameOver()
+	{
+		trace("onGameOver");
+		this.isGameOver = true;
+		this.ground.stop();
+
+		Timer.delay(() ->
+		{
+			this.switchTo(new PlayState());
+			FlxG.resetState();
+		}, 2000);
+	}
+
+	function onPoint()
+	{
+		this.scoreText.increaseScore(1);
 	}
 }

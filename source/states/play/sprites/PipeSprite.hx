@@ -7,27 +7,19 @@ class PipeSprite extends FlxSprite
 	static inline var PIPE_WITH = 80;
 	static inline var IMAGE = "assets/images/pipe-green.png";
 
-	var game:Game;
-
-	public function new(x:Float, y:Float, rotate:Bool, game:Game)
+	public function new(x:Float, y:Float, rotate:Bool)
 	{
 		super(x, y);
-		this.game = game;
 
 		loadGraphic(IMAGE, false, 52, 320);
-		// makeGraphic(PIPE_WITH, height, FlxColor.LIME);
 		setOrientation(rotate);
 		this.immovable = true;
-		this.velocity.x = game.backgroundVelocityX;
+		this.velocity.x = PlayConstants.BACKGROUND_VELOCITY_X;
 	}
 
-	override function update(elapsed:Float)
+	public function stop()
 	{
-		if (game.isGameOver)
-		{
-			this.velocity.x = 0;
-		}
-		super.update(elapsed);
+		this.velocity.x = 0;
 	}
 
 	function setOrientation(rotate)

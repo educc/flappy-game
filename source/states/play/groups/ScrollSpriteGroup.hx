@@ -5,23 +5,17 @@ import flixel.group.FlxGroup;
 
 class ScrollSpriteGroup extends FlxGroup
 {
-	var game:Game;
-	var assetName:String;
-
 	var left:FlxSprite;
 	var right:FlxSprite;
 
-	public function new(y:Float = 0, assetName:String, game:Game)
+	public function new(y:Float = 0, assetName:String)
 	{
 		super();
-		this.game = game;
-		this.assetName = assetName;
-
 		left = new FlxSprite(0, y, assetName);
 		right = new FlxSprite(left.width, y, assetName);
 
-		left.velocity.x = game.backgroundVelocityX;
-		right.velocity.x = game.backgroundVelocityX;
+		left.velocity.x = PlayConstants.BACKGROUND_VELOCITY_X;
+		right.velocity.x = PlayConstants.BACKGROUND_VELOCITY_X;
 
 		add(left);
 		add(right);
@@ -33,13 +27,14 @@ class ScrollSpriteGroup extends FlxGroup
 		right.immovable = b;
 	}
 
+	public function stop()
+	{
+		left.velocity.x = 0;
+		right.velocity.x = 0;
+	}
+
 	override function update(elapsed:Float)
 	{
-		if (game.isGameOver)
-		{
-			left.velocity.x = 0;
-			right.velocity.x = 0;
-		}
 		updateMovement(elapsed);
 		super.update(elapsed);
 	}

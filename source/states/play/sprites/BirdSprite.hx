@@ -1,6 +1,8 @@
 package states.play.sprites;
 
 import flixel.FlxSprite;
+import states.play.event.EventSource;
+import states.play.event.PlayEvent;
 import states.play.input.BirdBrain;
 import utils.SoundUtils;
 
@@ -12,7 +14,7 @@ class BirdSprite extends FlxSprite
 	// props
 	var jumpTimer:Float = 0;
 	var jumping:Bool = false;
-	var game:Game;
+	var keepMoving = true;
 
 	// bird
 	static inline var VELOCITY = 400;
@@ -29,21 +31,22 @@ class BirdSprite extends FlxSprite
 	static inline var SOUND_JUMP = "assets/sounds/jump.ogg";
 	static inline var ASSET_BIRD = "assets/images/bird-anim.png";
 
-	public function new(x:Float = 0, y:Float = 0, game:Game)
+	public function new(x:Float = 0, y:Float = 0, events:EventSource)
 	{
 		super(x, y);
-		this.game = game;
 		loadGraphic(ASSET_BIRD, true, 34, 24);
 		setGraphicSize(-1, 32);
 		setAnimation();
 		this.acceleration.y = ACCELERATION;
 		this.maxVelocity.y = VELOCITY;
+		events.subscribe(PlayEvent.GameOver, onGameOver);
 	}
 
 	override function update(elapsed:Float)
 	{
 		jumpTimer += elapsed;
-		if (!game.isGameOver)
+
+		if (this.keepMoving)
 		{
 			updateMovement(elapsed);
 		}
@@ -58,7 +61,7 @@ class BirdSprite extends FlxSprite
 		super.update(elapsed);
 	}
 
-	private function updateMovement(elapsed:Float)
+	function updateMovement(elapsed:Float)
 	{
 		var jumpPressed = shoudJump();
 
@@ -96,5 +99,10 @@ class BirdSprite extends FlxSprite
 			return false;
 		}
 		return this.brain.shouldJump();
+	}
+
+	function onGameOver()
+	{
+		keepMoving = false;
 	}
 }
