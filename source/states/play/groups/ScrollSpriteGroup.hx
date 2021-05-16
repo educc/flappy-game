@@ -1,4 +1,4 @@
-package;
+package states.play.groups;
 
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;

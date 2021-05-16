@@ -1,7 +1,7 @@
-package;
+package states.play.groups;
 
 import flixel.group.FlxGroup;
-import sprites.PipeSprite;
+import states.play.sprites.PipeSprite;
 
 class PipeGroup extends FlxGroup
 {

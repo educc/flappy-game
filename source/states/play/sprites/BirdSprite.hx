@@ -1,7 +1,8 @@
-package sprites;
+package states.play.sprites;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import utils.SoundUtils;
 
 class BirdSprite extends FlxSprite
 {
@@ -76,7 +77,6 @@ class BirdSprite extends FlxSprite
 
 	function setAnimation()
 	{
-		// var animationFrames = [1, 2, 3, 4, 5, 6].concat([for (i in 0...45) 0]);
 		animation.add("fly", [0, 1, 2], 4);
 		animation.play("fly");
 	}
@@ -84,7 +84,7 @@ class BirdSprite extends FlxSprite
 	function userPressJump():Bool
 	{
 		var jumpPressed = false;
-		#if FLX_KEYBOARD
+		#if (web || desktop)
 		jumpPressed = FlxG.keys.justPressed.SPACE;
 		#end
 		#if FLX_TOUCH

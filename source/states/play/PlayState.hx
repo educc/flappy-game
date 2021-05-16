@@ -1,4 +1,4 @@
-package;
+package states.play;
 
 import flixel.FlxG;
 import flixel.FlxObject;
@@ -9,9 +9,12 @@ import flixel.system.scaleModes.RatioScaleMode;
 import flixel.text.FlxText;
 import flixel.util.FlxAxes;
 import haxe.Timer;
-import sprites.BackgroundSprite;
-import sprites.BirdSprite;
-import sprites.WallSprite;
+import states.play.groups.PipeGroup;
+import states.play.groups.ScrollSpriteGroup;
+import states.play.sprites.BackgroundSprite;
+import states.play.sprites.BirdSprite;
+import states.play.sprites.WallSprite;
+import utils.SoundUtils;
 
 class PlayState extends FlxState
 {
@@ -33,7 +36,8 @@ class PlayState extends FlxState
 
 	override public function create()
 	{
-		super.create();
+		// super.create();
+		FlxG.mouse.visible = false;
 		FlxG.scaleMode = new RatioScaleMode();
 		groundY = FlxG.height - 90;
 

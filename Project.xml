@@ -2,9 +2,13 @@
 <project xmlns="http://lime.software/project/1.0.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://lime.software/project/1.0.2 http://lime.software/xsd/project-1.0.2.xsd">
 
+	<meta title="My Application" package="com.ecacho.flyfaraway" version="1.0.0" company="Edward Cacho" />
+
+
+
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="FlappyGame" file="FlappyGame" main="Main" version="0.0.1" company="Edward Cacho" />
+	<app title="FlappyGame" file="FlappyGame" main="Main" version="1.0.0" company="Edward Cacho" />
 
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
@@ -16,7 +20,7 @@
 	<!-- ____________________________ Window Settings ___________________________ -->
 
 	<!--These window settings apply to all targets-->
-	<window width="360" height="780" fps="60" background="#000000" hardware="true" vsync="false" />
+	<window width="360" height="640" fps="60" background="#000000" hardware="true" vsync="false" />
 	
 	
 	<!--HTML5-specific-->
@@ -26,11 +30,11 @@
 	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" />
 
 	<!--Mobile-specific-->
-	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" />
-	<!-- <section if="ios">
-		<certificate path="cert/keystore.jks" alias="XXX" password="YYY" />
-		<config:ios team-id="ZZZ" identity="WWW" provisioning-profile="cert/Mars_Dev.mobileprovision" />
-	</section> -->
+	<window if="mobile" orientation="portrait" fullscreen="true" width="0" height="0" />
+	<section if="ios">
+		<!-- <certificate path="cert/keystore.jks" alias="XXX" password="YYY" /> -->
+		<config:ios team-id="B6Z29X7YX6"  />
+	</section>
 
 	<!-- _____________________________ Path Settings ____________________________ -->
 
