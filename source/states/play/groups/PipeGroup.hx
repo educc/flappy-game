@@ -1,8 +1,6 @@
 package states.play.groups;
 
 import flixel.group.FlxGroup;
-import states.play.event.EventSource;
-import states.play.event.PlayEvent;
 import states.play.sprites.PipeSprite;
 
 class PipeGroup extends FlxGroup
@@ -15,7 +13,7 @@ class PipeGroup extends FlxGroup
 	var maxY:Int;
 	var point = 1;
 
-	public function new(x:Float, maxY:Int, events:EventSource)
+	public function new(x:Float, maxY:Int)
 	{
 		super();
 		this.maxY = maxY;
@@ -27,8 +25,6 @@ class PipeGroup extends FlxGroup
 
 		add(pipeTop);
 		add(pipeBottom);
-
-		events.subscribe(PlayEvent.GameOver, stop);
 	}
 
 	public function stop()
