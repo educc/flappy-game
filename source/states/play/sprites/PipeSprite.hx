@@ -9,9 +9,7 @@ class PipeSprite extends FlxSprite
 
 	public function new(x:Float, y:Float, rotate:Bool)
 	{
-		super(x, y);
-
-		loadGraphic(IMAGE, false, 52, 320);
+		super(x, y, IMAGE);
 		setOrientation(rotate);
 		this.immovable = true;
 		this.velocity.x = PlayConstants.BACKGROUND_VELOCITY_X;

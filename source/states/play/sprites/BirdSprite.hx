@@ -102,10 +102,6 @@ class BirdSprite extends FlxSprite
 
 	function shoudJump():Bool
 	{
-		if (this.brain == null)
-		{
-			return false;
-		}
-		return this.brain.shouldJump();
+		return if (this.brain == null) false else this.brain.shouldJump();
 	}
 }
