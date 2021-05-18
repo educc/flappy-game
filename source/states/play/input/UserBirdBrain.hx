@@ -13,8 +13,8 @@ class UserBirdBrain implements BirdBrain
 		jumpPressed = FlxG.keys.justPressed.SPACE;
 		#end
 		#if FLX_TOUCH
-		var list = FlxG.touches.justReleased();
-		jumpPressed = if (list.length > 0) true else false;
+		var touched = FlxG.touches.getFirst();
+		jumpPressed = if (touched != null && touched.justPressed) true else false;
 		#end
 		return jumpPressed;
 	}
