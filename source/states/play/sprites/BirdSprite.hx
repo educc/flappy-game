@@ -1,8 +1,6 @@
 package states.play.sprites;
 
 import flixel.FlxSprite;
-import states.play.event.EventSource;
-import states.play.event.PlayEvent;
 import states.play.input.BirdBrain;
 import utils.SoundUtils;
 
@@ -79,7 +77,6 @@ class BirdSprite extends FlxSprite
 			jumpTimer = 0;
 			SoundUtils.playReusableSound(SOUND_JUMP);
 		}
-
 		if (jumping)
 		{
 			if (jumpTimer < JUMP_LIMIT)
