@@ -41,6 +41,18 @@ class ScrollPipesGroup extends FlxGroup
 		return _pipes[idx];
 	}
 
+	public function closest(x:Float):PipeGroup
+	{
+		for (p in _pipes)
+		{
+			if (x <= p.xAfterWidth())
+			{
+				return p;
+			}
+		}
+		return null;
+	}
+
 	// private
 
 	function anyPipeIsOffsetScreen()

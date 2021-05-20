@@ -13,6 +13,8 @@ class PipeGroup extends FlxGroup
 	var maxY:Int;
 	var point = 1;
 
+	public var lowestPipe(default, null):Float;
+
 	public function new(x:Float, maxY:Int)
 	{
 		super();
@@ -22,6 +24,8 @@ class PipeGroup extends FlxGroup
 
 		pipeTop = new PipeSprite(x, pos[0], false);
 		pipeBottom = new PipeSprite(x, pos[1], true);
+
+		lowestPipe = pos[1];
 
 		add(pipeTop);
 		add(pipeBottom);

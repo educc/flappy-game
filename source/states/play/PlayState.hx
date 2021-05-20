@@ -9,6 +9,7 @@ import states.play.event.EventSource;
 import states.play.event.PlayEvent;
 import states.play.groups.ScrollPipesGroup;
 import states.play.groups.ScrollSpriteGroup;
+import states.play.input.NeuralNetBrain;
 import states.play.input.UserBirdBrain;
 import states.play.sprites.BackgroundSprite;
 import states.play.sprites.BirdSprite;
@@ -61,7 +62,8 @@ class PlayState extends FlxState
 		add(ground);
 
 		// create bird
-		createBird();
+		// createBird();
+		createIABird();
 
 		// events
 		events.subscribe(PlayEvent.GameOver, onGameOver);
@@ -105,6 +107,14 @@ class PlayState extends FlxState
 		player = new BirdSprite(0, 0);
 		player.screenCenter();
 		player.brain = new UserBirdBrain();
+		add(player);
+	}
+
+	function createIABird()
+	{
+		player = new BirdSprite(0, 0);
+		player.screenCenter();
+		player.brain = new NeuralNetBrain(player, pipes);
 		add(player);
 	}
 
