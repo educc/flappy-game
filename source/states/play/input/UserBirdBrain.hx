@@ -9,12 +9,13 @@ class UserBirdBrain implements BirdBrain
 	public function shouldJump():Bool
 	{
 		var jumpPressed = false;
-		#if (web || desktop)
-		jumpPressed = FlxG.keys.justPressed.SPACE;
-		#end
-		#if FLX_TOUCH
+
+		#if mobile
 		var touched = FlxG.touches.getFirst();
 		jumpPressed = if (touched != null && touched.justPressed) true else false;
+		#end
+		#if (web || desktop)
+		jumpPressed = FlxG.keys.justPressed.SPACE;
 		#end
 		return jumpPressed;
 	}
