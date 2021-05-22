@@ -5,32 +5,28 @@ import flixel.group.FlxGroup;
 
 class ScrollSpriteGroup extends FlxGroup
 {
-	var left:FlxSprite;
-	var right:FlxSprite;
+	var _sprites:Array<FlxSprite> = new Array();
 
-	public function new(y:Float = 0, assetName:String)
+	public function new(y:Float = 0, repeat = 1, assetName:String)
 	{
 		super();
-		left = new FlxSprite(0, y, assetName);
-		right = new FlxSprite(left.width, y, assetName);
-
-		left.velocity.x = PlayConstants.BACKGROUND_VELOCITY_X;
-		right.velocity.x = PlayConstants.BACKGROUND_VELOCITY_X;
-
-		add(left);
-		add(right);
+		createSprites(y, repeat, assetName);
 	}
 
 	public function setImmovable(b:Bool)
 	{
-		left.immovable = b;
-		right.immovable = b;
+		for (sprite in _sprites)
+		{
+			sprite.immovable = b;
+		}
 	}
 
 	public function stop()
 	{
-		left.velocity.x = 0;
-		right.velocity.x = 0;
+		for (sprite in _sprites)
+		{
+			sprite.velocity.x = 0;
+		}
 	}
 
 	override function update(elapsed:Float)
@@ -39,20 +35,52 @@ class ScrollSpriteGroup extends FlxGroup
 		super.update(elapsed);
 	}
 
-	private function updateMovement(elapsed:Float)
+	// privates
+
+	function createSprites(y:Float, number:Int, assetName:String)
 	{
-		if (xAfterWidth(left) < 0)
+		var x = 0.0;
+		for (i in 0...number)
 		{
-			left.x = xAfterWidth(right);
-		}
-		if (xAfterWidth(right) < 0)
-		{
-			right.x = xAfterWidth(left);
+			var sprite = new FlxSprite(x, y, assetName);
+			sprite.velocity.x = PlayConstants.BACKGROUND_VELOCITY_X;
+
+			_sprites.push(sprite);
+			add(sprite);
+
+			x += sprite.width;
 		}
 	}
 
-	private function xAfterWidth(sprite:FlxSprite):Float
+	function updateMovement(elapsed:Float)
+	{
+		var left = getSpriteLeftOffScreen();
+
+		if (left != null)
+		{
+			var right = getSpriteRightOffScreen();
+			_sprites.remove(left);
+			left.x = xAfterWidth(right);
+			_sprites.push(left);
+		}
+	}
+
+	inline function xAfterWidth(sprite:FlxSprite):Float
 	{
 		return sprite.x + sprite.width;
+	}
+
+	function getSpriteLeftOffScreen()
+	{
+		if (xAfterWidth(_sprites[0]) < 0)
+		{
+			return _sprites[0];
+		}
+		return null;
+	}
+
+	function getSpriteRightOffScreen()
+	{
+		return _sprites[_sprites.length - 1];
 	}
 }
