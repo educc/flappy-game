@@ -9,10 +9,12 @@ class ScrollPipesGroup extends FlxGroup
 	var _spaceBetweenPipes:Float;
 	var _positionY:Int;
 
+	static inline var SPACE = 200.0;
+
 	public function new(positionY:Int)
 	{
 		super();
-		_spaceBetweenPipes = FlxG.width / 2.0;
+		_spaceBetweenPipes = SPACE;
 		_positionY = positionY;
 		createPipes(2);
 	}
