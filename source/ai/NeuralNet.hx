@@ -30,7 +30,7 @@ class NeuralNet
 
 		var inputRound = input.map(it -> Math.round(it));
 		var r2 = Math.round(result);
-		trace('r=$r2 \t input=$inputRound');
+		// trace('r=$r2 \t input=$inputRound');
 		return activation(result + _bias);
 	}
 

@@ -6,6 +6,7 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import haxe.Timer;
+import states.intro.IntroState;
 import states.play.event.EventSource;
 import states.play.event.PlayEvent;
 import states.play.groups.ScrollPipesGroup;
@@ -34,7 +35,6 @@ class PlayState extends FlxState
 
 	override public function create()
 	{
-		// super.create();
 		// FlxG.mouse.visible = false;
 		// FlxG.scaleMode = new RatioScaleMode();
 
@@ -105,19 +105,10 @@ class PlayState extends FlxState
 		add(player);
 	}
 
-	function createIABird()
-	{
-		player = new BirdSprite(0, 0);
-		player.screenCenter();
-		player.brain = new NeuralNetBrain(player, pipes);
-		add(player);
-	}
-
 	// EVENTS
 
 	function onGameOver()
 	{
-		trace("onGameOver");
 		this.isGameOver = true;
 		this.player.stop();
 		this.ground.stop();
@@ -125,8 +116,8 @@ class PlayState extends FlxState
 
 		Timer.delay(() ->
 		{
-			FlxG.resetState();
-		}, 2000);
+			FlxG.switchState(new IntroState());
+		}, 3000);
 	}
 
 	function onPoint()
