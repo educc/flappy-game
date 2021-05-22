@@ -56,16 +56,26 @@ class BirdSprite extends FlxSprite
 		{
 			updateMovement(elapsed);
 		}
-		if (this.velocity.y >= 0)
-		{
-			animation.stop();
-			if (jumpTimer > ANGLE_TIMER_LIMIT)
-			{
-				this.angle = Math.min(MAX_ANGLE, this.angle + this.angleDelta);
-			}
-		}
+		stopAnimationOnFalling();
+		rotateBridOnFalling();
 
 		super.update(elapsed);
+	}
+
+	function stopAnimationOnFalling()
+	{
+		if (this.velocity.y >= 0 && this.angleDelta != 0)
+		{
+			animation.stop();
+		}
+	}
+
+	function rotateBridOnFalling()
+	{
+		if (this.velocity.y >= 0 && jumpTimer > ANGLE_TIMER_LIMIT)
+		{
+			this.angle = Math.min(MAX_ANGLE, this.angle + this.angleDelta);
+		}
 	}
 
 	function updateMovement(elapsed:Float)

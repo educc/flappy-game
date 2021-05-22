@@ -14,6 +14,7 @@ import states.play.input.NeuralNetBrain;
 import states.play.input.UserBirdBrain;
 import states.play.sprites.BackgroundSprite;
 import states.play.sprites.BirdSprite;
+import states.play.sprites.GroundSprite;
 import states.play.sprites.ScoreText;
 import states.play.sprites.WallSprite;
 import utils.SoundUtils;
@@ -50,8 +51,7 @@ class PlayState extends FlxState
 		// create walls
 		wallTop = new WallSprite(0, 0);
 		wallTop.alpha = 0;
-		ground = new ScrollSpriteGroup(PlayConstants.GROUND_Y_START, AssetsConstants.IMAGE_PLAY_GROUND);
-		ground.setImmovable(true);
+		ground = new GroundSprite();
 
 		add(wallTop);
 		add(ground);

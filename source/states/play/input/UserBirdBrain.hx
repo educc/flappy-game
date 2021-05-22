@@ -15,7 +15,7 @@ class UserBirdBrain implements BirdBrain
 		jumpPressed = if (touched != null && touched.justPressed) true else false;
 		#end
 		#if (web || desktop)
-		jumpPressed = FlxG.keys.justPressed.SPACE;
+		jumpPressed = FlxG.keys.justPressed.SPACE || FlxG.mouse.justPressed;
 		#end
 		return jumpPressed;
 	}
