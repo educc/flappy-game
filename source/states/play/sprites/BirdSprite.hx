@@ -1,6 +1,8 @@
 package states.play.sprites;
 
+import common.AssetsConstants;
 import flixel.FlxSprite;
+import openfl.Assets;
 import states.play.input.BirdBrain;
 import utils.SoundUtils;
 
@@ -8,6 +10,7 @@ class BirdSprite extends FlxSprite
 {
 	// public props
 	public var brain(default, default):Null<BirdBrain>;
+	public var angleDelta(default, default):Float = 4;
 
 	// props
 	var jumpTimer:Float = 0;
@@ -17,6 +20,7 @@ class BirdSprite extends FlxSprite
 	// bird
 	static inline var VELOCITY = 400;
 	static inline var ACCELERATION = 2000;
+	static inline var ANIMATION_NAME = "fly";
 
 	// jumping
 	static inline var JUMP_LIMIT = 0.1;
@@ -25,14 +29,10 @@ class BirdSprite extends FlxSprite
 	static inline var MIN_ANGLE = -25;
 	static inline var MAX_ANGLE = 90;
 
-	// assets
-	static inline var SOUND_JUMP = "assets/sounds/jump.ogg";
-	static inline var ASSET_BIRD = "assets/images/bird-anim.png";
-
 	public function new(x:Float = 0, y:Float = 0)
 	{
 		super(x, y);
-		loadGraphic(ASSET_BIRD, true, 34, 24);
+		loadGraphic(AssetsConstants.SPRITE_BIRD, true, 34, 24);
 		setGraphicSize(-1, 32);
 		setAnimation();
 		this.acceleration.y = ACCELERATION;
@@ -56,14 +56,15 @@ class BirdSprite extends FlxSprite
 		{
 			updateMovement(elapsed);
 		}
-		else
+		if (this.velocity.y >= 0)
 		{
 			animation.stop();
+			if (jumpTimer > ANGLE_TIMER_LIMIT)
+			{
+				this.angle = Math.min(MAX_ANGLE, this.angle + this.angleDelta);
+			}
 		}
-		if (jumpTimer > ANGLE_TIMER_LIMIT)
-		{
-			this.angle = Math.min(MAX_ANGLE, this.angle + 4);
-		}
+
 		super.update(elapsed);
 	}
 
@@ -75,7 +76,8 @@ class BirdSprite extends FlxSprite
 		{
 			jumping = true;
 			jumpTimer = 0;
-			SoundUtils.playReusableSound(SOUND_JUMP);
+			SoundUtils.playReusableSound(AssetsConstants.SOUND_JUMP);
+			animation.play(ANIMATION_NAME);
 		}
 		if (jumping)
 		{
@@ -93,8 +95,8 @@ class BirdSprite extends FlxSprite
 
 	function setAnimation()
 	{
-		animation.add("fly", [0, 1, 2], 8);
-		animation.play("fly");
+		animation.add(ANIMATION_NAME, [0, 1, 2], 8);
+		animation.play(ANIMATION_NAME);
 	}
 
 	function shoudJump():Bool

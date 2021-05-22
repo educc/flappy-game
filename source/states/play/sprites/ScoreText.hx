@@ -1,5 +1,6 @@
 package states.play.sprites;
 
+import common.AssetsConstants;
 import flixel.FlxG;
 import flixel.text.FlxText;
 import utils.SoundUtils;
@@ -15,7 +16,6 @@ class ScoreText extends FlxText
 
 	static inline var POS_Y = 50;
 	static inline var FONT_SIZE = 28;
-	static inline var SOUND_COIN = "assets/sounds/coin.ogg";
 
 	public function new()
 	{
@@ -34,7 +34,7 @@ class ScoreText extends FlxText
 		this.score += increase;
 		if (increase > 0)
 		{
-			SoundUtils.playReusableSound(SOUND_COIN);
+			SoundUtils.playReusableSound(AssetsConstants.SOUND_COIN);
 		}
 		this.currentText = Std.string(this.score);
 	}

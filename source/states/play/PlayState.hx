@@ -1,5 +1,6 @@
 package states.play;
 
+import common.AssetsConstants;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -20,7 +21,6 @@ import utils.SoundUtils;
 class PlayState extends FlxState
 {
 	// props
-	var groundY:Int = 0;
 	var isGameOver = false;
 	var events = new EventSource();
 
@@ -31,21 +31,16 @@ class PlayState extends FlxState
 	var player:BirdSprite;
 	var scoreText:ScoreText;
 
-	// constans
-	static inline var SOUND_COLLIDE = "assets/sounds/impact.ogg";
-	static inline var IMAGE_GROUND = "assets/images/ground.png";
-
 	override public function create()
 	{
 		// super.create();
 		// FlxG.mouse.visible = false;
 		// FlxG.scaleMode = new RatioScaleMode();
-		groundY = FlxG.height - 90;
 
 		add(new BackgroundSprite());
 
 		// create pipes
-		pipes = new ScrollPipesGroup(groundY);
+		pipes = new ScrollPipesGroup(PlayConstants.GROUND_Y_START);
 		add(pipes);
 
 		// score
@@ -55,15 +50,15 @@ class PlayState extends FlxState
 		// create walls
 		wallTop = new WallSprite(0, 0);
 		wallTop.alpha = 0;
-		ground = new ScrollSpriteGroup(groundY, IMAGE_GROUND);
+		ground = new ScrollSpriteGroup(PlayConstants.GROUND_Y_START, AssetsConstants.IMAGE_PLAY_GROUND);
 		ground.setImmovable(true);
 
 		add(wallTop);
 		add(ground);
 
 		// create bird
-		// createBird();
-		createIABird();
+		createBird();
+		// createIABird();
 
 		// events
 		events.subscribe(PlayEvent.GameOver, onGameOver);
@@ -86,7 +81,7 @@ class PlayState extends FlxState
 		{
 			return;
 		}
-		SoundUtils.playReusableSound(SOUND_COLLIDE);
+		SoundUtils.playReusableSound(AssetsConstants.SOUND_COLLIDE);
 		events.emit(PlayEvent.GameOver);
 	}
 
