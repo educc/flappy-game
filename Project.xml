@@ -35,6 +35,12 @@
 		<!-- <certificate path="cert/keystore.jks" alias="XXX" password="YYY" /> -->
 		<config:ios team-id="B6Z29X7YX6"  />
 	</section>
+	<section if="android">
+		<android target-sdk-version="26" />
+		<config:android build-tools-version="26" />
+		<!-- <config:android gradle-version="7.0" /> -->
+	</section>
+
 
 	<!-- _____________________________ Path Settings ____________________________ -->
 
