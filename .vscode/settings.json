@@ -9,5 +9,13 @@
 			"source.sortImports": true
 		}
 	},
-	"haxe.enableExtendedIndentation": true
+	"haxe.enableExtendedIndentation": true,
+	"saveAndRun": {
+		"commands": [
+			{
+				"match": ".*",
+                "cmd": "lime build html5"
+            }
+        ]
+    }
 }
