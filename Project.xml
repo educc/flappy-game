@@ -38,6 +38,7 @@
 	<window if="mobile" orientation="portrait" fullscreen="true" width="0" height="0" />
 	<section if="ios">
 		<!-- <certificate path="cert/keystore.jks" alias="XXX" password="YYY" /> -->
+		<architecture exclude="armv7" />
 		<config:ios team-id="B6Z29X7YX6" />
 	</section>
 	<section if="android">
