@@ -28,9 +28,23 @@ lime run html5
 lime run macos
 lime run android
 lime run ios
+lime test ios
 ```
 
 # How to build
 ```sh
 lime build html5
 ```
+
+# Build .ipa files for iOS
+First step is build the ios app
+```sh
+lime build ios
+```
+Building .ipa file
+1. Create a folder called Payload
+2. Place the .app folder inside of that
+3. Zip up the Payload folder using normal compression
+4. Then rename the file with a .ipa extension
+
+Source: https://gist.github.com/bananita/8039021
